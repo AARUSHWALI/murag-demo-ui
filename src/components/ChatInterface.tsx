@@ -22,16 +22,43 @@ const demoMessages: Message[] = [
   {
     id: "1",
     role: "user",
-    content: "What are the key findings from the uploaded research papers?",
+    content: "What are the security threats in Sector Alpha?",
   },
   {
     id: "2",
     role: "assistant",
-    content: "Based on the uploaded documents, I've identified three key findings:\n\n1. The neural network architecture shows 94% accuracy in multimodal classification tasks[1].\n\n2. Processing latency for real-time inference averages 120ms across all modalities[2].\n\n3. The retrieval-augmented generation approach significantly reduces hallucination rates compared to baseline models[3].",
+    content: "The main threats in Sector Alpha include unauthorized crossings and restricted zone breaches. Analysis shows a 40% increase in perimeter violations over the past quarter, with most incidents occurring during low-visibility conditions.",
     citations: [
-      { id: "c1", source: "research_paper.pdf", type: "pdf", page: 15 },
-      { id: "c2", source: "performance_metrics.docx", type: "docx", page: 8 },
-      { id: "c3", source: "benchmark_results.pdf", type: "pdf", page: 22 },
+      { id: "c1", source: "National_Security_Brief.pdf", type: "pdf", page: 12 },
+      { id: "c2", source: "Satellite_Map.png", type: "image" },
+    ],
+  },
+  {
+    id: "3",
+    role: "user",
+    content: "When is the planned meeting?",
+  },
+  {
+    id: "4",
+    role: "assistant",
+    content: "The planned meeting is scheduled at 2300 hours near checkpoint Bravo, as confirmed in the intercepted communications.",
+    citations: [
+      { id: "c3", source: "Intercepted_Call.mp3", type: "audio", timestamp: "00:02:35" },
+    ],
+  },
+  {
+    id: "5",
+    role: "user",
+    content: "Summarize the report highlights.",
+  },
+  {
+    id: "6",
+    role: "assistant",
+    content: "The report highlights several critical areas:\n\n• Infiltration risks have increased by 35% in monitored zones\n• Perimeter breaches show coordinated patterns suggesting organized activity\n• Cross-border coordination has evolved with more sophisticated communication methods\n• Recommended enhanced surveillance in Sectors Alpha and Delta",
+    citations: [
+      { id: "c4", source: "National_Security_Brief.pdf", type: "pdf", page: 10 },
+      { id: "c5", source: "National_Security_Brief.pdf", type: "pdf", page: 12 },
+      { id: "c6", source: "National_Security_Brief.pdf", type: "pdf", page: 14 },
     ],
   },
 ];
@@ -59,9 +86,10 @@ export function ChatInterface() {
       const aiMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: "assistant",
-        content: "I've analyzed your query across all uploaded documents. Here's what I found based on the available information...",
+        content: "I've analyzed your query across all uploaded documents. Based on the available intelligence data, I found relevant information in the National Security Brief and supporting evidence from satellite imagery and audio transcripts.",
         citations: [
-          { id: "demo", source: "uploaded_file.pdf", type: "pdf", page: 5 },
+          { id: "demo1", source: "National_Security_Brief.pdf", type: "pdf", page: 8 },
+          { id: "demo2", source: "Satellite_Map.png", type: "image" },
         ],
       };
       setMessages((prev) => [...prev, aiMessage]);

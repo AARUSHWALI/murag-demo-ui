@@ -9,30 +9,34 @@ interface UploadedFile {
   name: string;
   type: "pdf" | "docx" | "image" | "audio";
   size: string;
-  status: "processing" | "ready";
+  status: "processing" | "completed";
+  uploadedAt?: Date;
 }
 
 const demoFiles: UploadedFile[] = [
   {
-    id: "1",
-    name: "research_paper.pdf",
+    id: "demo-1",
+    name: "National_Security_Brief.pdf",
     type: "pdf",
     size: "2.4 MB",
-    status: "ready",
+    status: "completed",
+    uploadedAt: new Date(Date.now() - 3600000),
   },
   {
-    id: "2",
-    name: "meeting_notes.docx",
-    type: "docx",
-    size: "856 KB",
-    status: "ready",
-  },
-  {
-    id: "3",
-    name: "diagram.png",
+    id: "demo-2",
+    name: "Satellite_Map.png",
     type: "image",
-    size: "1.2 MB",
-    status: "ready",
+    size: "1.8 MB",
+    status: "completed",
+    uploadedAt: new Date(Date.now() - 2400000),
+  },
+  {
+    id: "demo-3",
+    name: "Intercepted_Call.mp3",
+    type: "audio",
+    size: "3.2 MB",
+    status: "completed",
+    uploadedAt: new Date(Date.now() - 1800000),
   },
 ];
 
@@ -120,12 +124,12 @@ export function FileUploadPanel() {
                   <span>•</span>
                   <span
                     className={
-                      file.status === "ready"
+                      file.status === "completed"
                         ? "text-green-500"
                         : "text-yellow-500"
                     }
                   >
-                    {file.status === "ready" ? "Ready" : "Processing..."}
+                    {file.status === "completed" ? "✓ Indexed" : "Processing..."}
                   </span>
                 </div>
               </div>

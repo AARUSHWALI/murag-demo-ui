@@ -1,5 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { FileText, FileType, Image, Mic } from "lucide-react";
+import { useState } from "react";
+import { CitationModal } from "./CitationModal";
 
 interface Citation {
   id: string;
@@ -31,43 +33,55 @@ const getFileIcon = (type: Citation["type"]) => {
 
 export function ChatMessage({ message }: { message: Message }) {
   const isUser = message.role === "user";
+  const [selectedCitation, setSelectedCitation] = useState<Citation | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleCitationClick = (citation: Citation) => {
+    setSelectedCitation(citation);
+    setIsModalOpen(true);
+  };
 
   return (
-    <div className={`flex ${isUser ? "justify-end" : "justify-start"} slide-in-up`}>
-      <div
-        className={`max-w-[80%] rounded-lg p-4 ${
-          isUser
-            ? "bg-primary/10 border border-primary/20"
-            : "bg-card border border-border"
-        }`}
-      >
-        <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.content}</p>
+    <>
+      <CitationModal
+        citation={selectedCitation}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
+      <div className={`flex ${isUser ? "justify-end" : "justify-start"} slide-in-up`}>
+        <div
+          className={`max-w-[80%] rounded-lg p-4 ${
+            isUser
+              ? "bg-primary/10 border border-primary/20"
+              : "bg-card border border-border"
+          }`}
+        >
+          <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.content}</p>
 
-        {message.citations && message.citations.length > 0 && (
-          <div className="mt-3 pt-3 border-t border-border/50">
-            <p className="text-xs text-muted-foreground mb-2">Sources:</p>
-            <div className="flex flex-wrap gap-2">
-              {message.citations.map((citation) => (
-                <Badge
-                  key={citation.id}
-                  variant="outline"
-                  className="cursor-pointer hover:bg-primary/10 hover:border-primary transition-all duration-200 text-xs"
-                  onClick={() => {
-                    console.log("Citation clicked:", citation);
-                  }}
-                >
-                  <span className="mr-1">{getFileIcon(citation.type)}</span>
-                  <span className="truncate max-w-[150px]">{citation.source}</span>
-                  {citation.page && <span className="ml-1">p.{citation.page}</span>}
-                  {citation.timestamp && (
-                    <span className="ml-1">{citation.timestamp}</span>
-                  )}
-                </Badge>
-              ))}
+          {message.citations && message.citations.length > 0 && (
+            <div className="mt-3 pt-3 border-t border-border/50">
+              <p className="text-xs text-muted-foreground mb-2">Sources:</p>
+              <div className="flex flex-wrap gap-2">
+                {message.citations.map((citation) => (
+                  <Badge
+                    key={citation.id}
+                    variant="outline"
+                    className="cursor-pointer hover:bg-primary/20 hover:border-primary hover:scale-105 transition-all duration-200 text-xs"
+                    onClick={() => handleCitationClick(citation)}
+                  >
+                    <span className="mr-1">{getFileIcon(citation.type)}</span>
+                    <span className="truncate max-w-[150px]">{citation.source}</span>
+                    {citation.page && <span className="ml-1">p.{citation.page}</span>}
+                    {citation.timestamp && (
+                      <span className="ml-1">{citation.timestamp}</span>
+                    )}
+                  </Badge>
+                ))}
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
