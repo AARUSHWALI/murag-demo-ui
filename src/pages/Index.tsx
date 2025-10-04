@@ -29,9 +29,18 @@ const Index = () => {
             language. Get AI-powered answers with verifiable citations. All in a
             secure, offline-ready environment.
           </p>
-          <Button variant="glow" size="lg">
+          <Button 
+            variant="glow" 
+            size="lg"
+            onClick={() => {
+              document.getElementById('chat-section')?.scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'center'
+              });
+            }}
+          >
             <Sparkles className="w-5 h-5 mr-2" />
-            Try Demo Mode
+            Query Your Data
           </Button>
         </div>
 
@@ -45,7 +54,7 @@ const Index = () => {
       </section>
 
       {/* Main Interface */}
-      <section className="container mx-auto px-4 py-8 pb-12">
+      <section id="chat-section" className="container mx-auto px-4 py-8 pb-12">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* File Upload Panel */}
           <div className="lg:col-span-1 h-[600px]">
